@@ -639,8 +639,6 @@ Possible future improvements include:
 - Data drift detection
 - Model versioning
 - CI/CD pipeline
-- Automated deployment
-- Front-end visualization
 - Additional uncertainty information
 - Improved severe-event modeling
 - Integration with external environmental data sources
