@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import router
 from app.core.config import settings
@@ -12,6 +13,18 @@ def create_app() -> FastAPI:
             "API REST para la predicción del porcentaje "
             "de blanqueamiento de corales."
         ),
+    )
+
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=[
+            "http://localhost:5500",
+            "http://127.0.0.1:5500",
+            "https://TU-SITIO.netlify.app",
+        ],
+        allow_credentials=True,
+        allow_methods=["GET", "POST"],
+        allow_headers=["*"],
     )
 
     application.include_router(router)
