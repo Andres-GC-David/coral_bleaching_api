@@ -58,6 +58,25 @@ Coral bleaching is influenced by multiple environmental conditions, including te
 
 This project uses a **supervised regression** approach to estimate the percentage of coral bleaching from environmental observations.
 
+## Data Source
+
+The Machine Learning model was developed using the following public dataset:
+
+> van Woesik, R., & Burkepile, D. (2022).  
+> *Bleaching and environmental data for global coral reef sites from 1980–2020.*  
+> Biological and Chemical Oceanography Data Management Office (BCO-DMO).  
+> Version 2, version date 2022-10-14.  
+> DOI: https://doi.org/10.26008/1912/bco-dmo.773466.2  
+> Accessed September 20, 2026.
+
+Dataset page:
+
+https://www.bco-dmo.org/dataset/773466
+
+For this project, a processed subset of the original dataset was used after
+data cleaning, feature preprocessing, feature selection, and preparation of
+the supervised regression target.
+
 ### Target
 
 ```text
