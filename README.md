@@ -1,12 +1,54 @@
-# Coral Bleaching Prediction API
+# 🪸 Coral Bleaching Prediction API
 
-Machine Learning REST API for estimating coral bleaching percentage from environmental and geographical variables.
+[![API Tests](https://github.com/Andres-GC-David/coral_bleaching_api/actions/workflows/tests.yml/badge.svg)](https://github.com/Andres-GC-David/coral_bleaching_api/actions/workflows/tests.yml)
 
-The project started as an academic supervised learning study focused on predicting `Percent_Bleaching`. The selected Machine Learning model was later exported and deployed behind a production-style REST API using FastAPI.
+Machine Learning REST API for estimating coral bleaching percentage from environmental, geographic, temporal, and categorical variables.
 
-The main objective of this repository is not only to expose a trained model, but to demonstrate an end-to-end Machine Learning workflow:
+The project started as an academic supervised-learning study focused on predicting `Percent_Bleaching`. The selected model was later exported as a serialized scikit-learn pipeline and exposed through a production-style REST API built with FastAPI.
 
-**data analysis → preprocessing → model training → evaluation → model serialization → REST API → automated testing → Docker containerization**
+The repository demonstrates an end-to-end Machine Learning delivery workflow:
+
+```text
+Data analysis
+    ↓
+Preprocessing
+    ↓
+Feature selection
+    ↓
+Model training and evaluation
+    ↓
+Model serialization
+    ↓
+FastAPI REST API
+    ↓
+Automated tests
+    ↓
+Docker
+    ↓
+GitHub Actions CI
+    ↓
+Render deployment
+```
+
+---
+
+## 🌐 Live API
+
+The application is publicly deployed on **Render** using the Docker image defined in this repository.
+
+### Interactive API Documentation
+
+[Open Swagger UI](https://coral-bleaching-api.onrender.com/docs)
+
+### Health Check
+
+[API Health](https://coral-bleaching-api.onrender.com/health)
+
+### Model Information
+
+[Model Information](https://coral-bleaching-api.onrender.com/model/info)
+
+> The application is hosted on a free-tier service. The first request after a period of inactivity may take additional time while the service starts.
 
 ---
 
@@ -14,15 +56,15 @@ The main objective of this repository is not only to expose a trained model, but
 
 Coral bleaching is influenced by multiple environmental conditions, including temperature anomalies, thermal stress, turbidity, depth, wind conditions, geography, and other oceanographic variables.
 
-This project uses a supervised regression approach to estimate the percentage of coral bleaching based on environmental observations.
+This project uses a **supervised regression** approach to estimate the percentage of coral bleaching from environmental observations.
 
-The target variable is:
+### Target
 
 ```text
 Percent_Bleaching
 ```
 
-The final prediction pipeline receives 33 input features and returns an estimated bleaching percentage between 0 and 100.
+The final prediction pipeline receives **33 input features** and returns an estimated coral bleaching percentage.
 
 ---
 
@@ -30,13 +72,13 @@ The final prediction pipeline receives 33 input features and returns an estimate
 
 Several regression algorithms were evaluated during the experimentation phase.
 
-The final selected model was:
+The selected final model is:
 
 ```text
 RandomForestRegressor
 ```
 
-### Final test metrics
+### Final Test Metrics
 
 | Metric | Result |
 |---|---:|
@@ -48,11 +90,11 @@ RandomForestRegressor
 
 The model explains approximately **55.5% of the observed variance** in coral bleaching percentage.
 
-The MAE indicates that predictions differ from the observed bleaching percentage by approximately **7.5 percentage points on average**.
+The MAE indicates that predictions differ from observed bleaching values by approximately **7.5 percentage points on average**.
 
 The model performs better on low and moderate bleaching observations than on severe bleaching events.
 
-Because of this, the system should be considered an **experimental academic Machine Learning model**, not an operational ecological forecasting system.
+For this reason, the system should be considered an **experimental academic Machine Learning model**, not an operational ecological forecasting system.
 
 ---
 
@@ -60,7 +102,7 @@ Because of this, the system should be considered an **experimental academic Mach
 
 The final model uses **33 predictors**.
 
-They include environmental, geographic, temporal, and categorical variables such as:
+They include variables related to:
 
 - Latitude and longitude
 - Distance to shore
@@ -68,7 +110,7 @@ They include environmental, geographic, temporal, and categorical variables such
 - Turbidity
 - Cyclone frequency
 - Wind speed
-- Sea surface temperature variables
+- Sea-surface temperature
 - Sea Surface Temperature Anomaly (`SSTA`)
 - Thermal Stress Anomaly (`TSA`)
 - Degree Heating Week variables
@@ -89,7 +131,7 @@ Exposure
 
 ## Machine Learning Pipeline
 
-The serialized model contains both preprocessing and prediction logic.
+The deployed `.joblib` artifact contains both preprocessing and prediction logic.
 
 ```text
 Raw input
@@ -107,13 +149,13 @@ Categorical encoding
     └── One-Hot Encoding
     │
     ▼
-Random Forest Regressor
+RandomForestRegressor
     │
     ▼
 Predicted bleaching percentage
 ```
 
-Keeping preprocessing and the estimator inside the same serialized pipeline helps ensure that inference uses the same transformations that were applied during training.
+Keeping preprocessing and the estimator inside the same serialized pipeline helps ensure that inference applies the same transformations used during training.
 
 ---
 
@@ -146,7 +188,7 @@ Prediction
 JSON Response
 ```
 
-Model metadata is handled separately through a metadata service.
+Model metadata is managed separately:
 
 ```text
 model_metadata.json
@@ -181,9 +223,13 @@ API
 - pytest
 - FastAPI TestClient
 
-### Deployment
+### DevOps / Deployment
 
+- Git
+- GitHub
+- GitHub Actions
 - Docker
+- Render
 
 ---
 
@@ -192,25 +238,24 @@ API
 ```text
 coral-bleaching-api/
 │
+├── .github/
+│   └── workflows/
+│       └── tests.yml
+│
 ├── app/
-│   │
 │   ├── api/
 │   │   ├── __init__.py
 │   │   └── routes.py
-│   │
 │   ├── core/
 │   │   ├── __init__.py
 │   │   └── config.py
-│   │
 │   ├── schemas/
 │   │   ├── __init__.py
 │   │   └── prediction.py
-│   │
 │   ├── services/
 │   │   ├── __init__.py
 │   │   ├── model_metadata_service.py
 │   │   └── prediction_service.py
-│   │
 │   ├── __init__.py
 │   └── main.py
 │
@@ -241,7 +286,7 @@ coral-bleaching-api/
 GET /
 ```
 
-Returns general API status.
+Returns the general API status.
 
 Example:
 
@@ -268,7 +313,7 @@ Example:
 }
 ```
 
-This endpoint can also be used by container platforms and monitoring systems to verify that the API is running.
+This endpoint is also configured as the health-check path for the Render service.
 
 ---
 
@@ -295,7 +340,7 @@ Example:
 GET /model/info
 ```
 
-Returns information about the deployed Machine Learning model.
+Returns metadata about the deployed Machine Learning model.
 
 Example:
 
@@ -325,7 +370,7 @@ POST /api/v1/predictions
 
 The endpoint receives environmental information and returns a predicted coral bleaching percentage.
 
-### Example request
+### Example Request
 
 ```json
 {
@@ -365,7 +410,7 @@ The endpoint receives environmental information and returns a predicted coral bl
 }
 ```
 
-### Example response
+### Example Response
 
 ```json
 {
@@ -382,13 +427,13 @@ The exact prediction depends on the trained model.
 
 ## Bleaching Level
 
-For presentation purposes, the API also converts the numerical prediction into an interpretation band:
+For presentation purposes, the API converts the numerical prediction into an interpretation band:
 
 | Predicted bleaching | Level |
 |---:|---|
 | `< 25%` | Low |
-| `25–50%` | Moderate |
-| `50–75%` | High |
+| `25% – < 50%` | Moderate |
+| `50% – < 75%` | High |
 | `≥ 75%` | Severe |
 
 These bands are an **application-level interpretation** of the regression output.
@@ -408,10 +453,10 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/Andres-GC-David/coral_bleaching_api.git
-cd coral-bleaching-api
+cd coral_bleaching_api
 ```
 
-Create a virtual environment:
+Create a virtual environment.
 
 ### Windows
 
@@ -449,21 +494,21 @@ http://127.0.0.1:8000
 
 # Interactive API Documentation
 
-FastAPI automatically generates interactive OpenAPI documentation.
+FastAPI automatically generates OpenAPI documentation.
 
-Swagger UI:
+### Swagger UI
 
 ```text
 http://127.0.0.1:8000/docs
 ```
 
-Alternative ReDoc documentation:
+### ReDoc
 
 ```text
 http://127.0.0.1:8000/redoc
 ```
 
-Swagger can be used to test the prediction endpoint directly from the browser.
+Swagger can be used to execute prediction requests directly from the browser.
 
 ---
 
@@ -474,16 +519,10 @@ The project contains automated API tests using `pytest`.
 Run:
 
 ```bash
-pytest
-```
-
-or:
-
-```bash
 pytest -v
 ```
 
-Current tests validate:
+The current test suite validates:
 
 - Health endpoint
 - Model loading status
@@ -500,9 +539,94 @@ Expected result:
 
 ---
 
+# Continuous Integration and Deployment
+
+## GitHub Actions CI
+
+The repository includes the workflow:
+
+```text
+.github/workflows/tests.yml
+```
+
+The workflow is triggered on:
+
+```text
+push → main
+pull_request → main
+```
+
+For every execution it:
+
+1. Checks out the repository.
+2. Configures Python 3.13.
+3. Installs the dependencies from `requirements.txt`.
+4. Runs the complete `pytest` test suite.
+
+```text
+Git push / Pull Request
+          │
+          ▼
+     GitHub Actions
+          │
+          ▼
+       pytest -v
+          │
+    ┌─────┴─────┐
+    │           │
+   FAIL        PASS
+    │           │
+    ▼           ▼
+ CI fails   CI succeeds
+```
+
+The current workflow has been validated successfully with all **6 tests passing**.
+
+## CI-Gated Deployment
+
+Render is configured to deploy from the `main` branch **after CI checks pass**.
+
+The resulting flow is:
+
+```text
+Local development
+       │
+       ▼
+   git push
+       │
+       ▼
+     GitHub
+       │
+       ▼
+ GitHub Actions
+       │
+       ▼
+      Tests
+       │
+ ┌─────┴────────────┐
+ │                  │
+FAIL               PASS
+ │                  │
+ ▼                  ▼
+No production     Render
+deployment          │
+                    ▼
+                Docker build
+                    │
+                    ▼
+                 Deploy
+                    │
+                    ▼
+              Public FastAPI
+```
+
+This prevents a new production deployment from proceeding when the automated CI checks fail.
+
+---
+
 # Docker
 
-The API can run inside a Docker container.
+The API can run locally in the same containerized environment used for deployment.
 
 Build the image:
 
@@ -516,7 +640,7 @@ Run the container:
 docker run -p 8000:8000 coral-bleaching-api
 ```
 
-The API will then be available at:
+The API will be available at:
 
 ```text
 http://localhost:8000
@@ -530,9 +654,28 @@ http://localhost:8000/docs
 
 ---
 
+# Cloud Deployment
+
+The production API is hosted as a **Render Web Service** using the repository's `Dockerfile`.
+
+Deployment configuration:
+
+```text
+Repository: Andres-GC-David/coral_bleaching_api
+Branch: main
+Runtime: Docker
+Health Check: /health
+Deployment: after CI checks pass
+Hosting: Render free tier
+```
+
+The deployment pipeline is therefore reproducible from source control and does not require manually copying application files to the server.
+
+---
+
 # Data Validation
 
-Input validation is performed using Pydantic before data reaches the Machine Learning model.
+Input validation is performed using Pydantic before data reaches the Machine Learning pipeline.
 
 Examples include:
 
@@ -543,7 +686,7 @@ Month     → 1 to 12
 Day       → 1 to 31
 ```
 
-Invalid requests return the corresponding HTTP validation response before inference is executed.
+Invalid requests return an HTTP validation response before inference is executed.
 
 ---
 
@@ -551,7 +694,7 @@ Invalid requests return the corresponding HTTP validation response before infere
 
 The model has several important limitations.
 
-### Moderate predictive capability
+### Moderate Predictive Capability
 
 The final model achieved:
 
@@ -559,21 +702,21 @@ The final model achieved:
 R² ≈ 0.555
 ```
 
-This means that a significant part of the variability in coral bleaching remains unexplained by the available predictors.
+A significant part of the variability in coral bleaching therefore remains unexplained by the available predictors.
 
-### Severe bleaching events
+### Severe Bleaching Events
 
 Prediction error increases for observations with very high bleaching percentages.
 
-The model should therefore not be interpreted as equally reliable across the entire 0–100% target range.
+The model should not be interpreted as equally reliable across the entire target range.
 
-### Dataset dependency
+### Dataset Dependency
 
-Predictions depend on the environmental and geographic patterns represented in the training dataset.
+Predictions depend on environmental and geographic patterns represented in the training dataset.
 
 Observations substantially outside the training distribution may produce less reliable predictions.
 
-### Scientific use
+### Scientific Use
 
 This API was developed as an academic and portfolio Machine Learning project.
 
@@ -583,7 +726,7 @@ It is **not intended for operational environmental monitoring, ecological decisi
 
 # Design Principles
 
-The API was designed with separation of responsibilities in mind.
+The API follows separation of responsibilities.
 
 ### Routes
 
@@ -603,7 +746,7 @@ app/schemas/
 
 ### Services
 
-Responsible for business and inference logic.
+Responsible for application and inference logic.
 
 ```text
 app/services/
@@ -625,23 +768,7 @@ Contains the serialized Machine Learning pipeline and model metadata.
 models/
 ```
 
-This structure avoids placing the entire application inside a single FastAPI file and makes the project easier to maintain, test, and extend.
-
----
-
-# Future Improvements
-
-Possible future improvements include:
-
-- Batch prediction endpoint
-- Prediction logging
-- Model monitoring
-- Data drift detection
-- Model versioning
-- CI/CD pipeline
-- Additional uncertainty information
-- Improved severe-event modeling
-- Integration with external environmental data sources
+This structure avoids placing the entire application in a single FastAPI module and makes the project easier to maintain, test, and extend.
 
 ---
 
@@ -657,31 +784,44 @@ Possible future improvements include:
 - [x] FastAPI REST API
 - [x] Pydantic input validation
 - [x] Model metadata endpoint
-- [x] Swagger/OpenAPI documentation
+- [x] Swagger / OpenAPI documentation
 - [x] Automated API tests
 - [x] Docker containerization
-- [ ] CI/CD
-- [ ] Public cloud deployment
+- [x] GitHub repository
+- [x] GitHub Actions continuous integration
+- [x] CI-gated deployment
+- [x] Render public cloud deployment
+- [x] Render health check
 - [ ] Web user interface
+- [ ] Model monitoring / observability
+- [ ] Data drift detection
 
-## 🌐 Live API
+---
 
-The Coral Bleaching Prediction API is publicly deployed using Docker and Render.
+# Future Improvements
 
-### Interactive API Documentation
+Potential improvements include:
 
-[Open Swagger UI](https://coral-bleaching-api.onrender.com/docs)
+- Batch prediction endpoint
+- Prediction logging
+- Model monitoring and observability
+- Data drift detection
+- Model versioning strategy
+- Improved severe-event modeling
+- Prediction uncertainty information
+- Additional integration tests
+- Code quality / linting checks in CI
+- Automated container security scanning
+- External environmental data integrations
+- Web-based user interface
 
-### Health Check
+---
 
-[API Health](https://coral-bleaching-api.onrender.com/health)
+# Repository
 
-### Model Information
+GitHub:
 
-[Model Information](https://coral-bleaching-api.onrender.com/model/info)
-
-> The application is hosted on a free-tier service.  
-> The first request after a period of inactivity may take additional time while the service starts.
+[Andres-GC-David/coral_bleaching_api](https://github.com/Andres-GC-David/coral_bleaching_api)
 
 ---
 
@@ -693,7 +833,7 @@ Predictions generated by the API should not be interpreted as authoritative ecol
 
 ---
 
-## Author
+## Authors
 
 **Andrés Gutiérrez and Brandon Arroyo**
 
