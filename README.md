@@ -1,4 +1,4 @@
-# 🪸 Coral Bleaching Prediction API
+# Coral Bleaching Prediction API
 
 Machine Learning REST API for estimating coral bleaching percentage from environmental and geographical variables.
 
