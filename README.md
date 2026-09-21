@@ -666,6 +666,25 @@ Possible future improvements include:
 - [ ] Public cloud deployment
 - [ ] Web user interface
 
+## 🌐 Live API
+
+The Coral Bleaching Prediction API is publicly deployed using Docker and Render.
+
+### Interactive API Documentation
+
+[Open Swagger UI](https://coral-bleaching-api.onrender.com/docs)
+
+### Health Check
+
+[API Health](https://coral-bleaching-api.onrender.com/health)
+
+### Model Information
+
+[Model Information](https://coral-bleaching-api.onrender.com/model/info)
+
+> The application is hosted on a free-tier service.  
+> The first request after a period of inactivity may take additional time while the service starts.
+
 ---
 
 # Disclaimer
