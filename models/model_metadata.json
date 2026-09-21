@@ -1,0 +1,13 @@
+{
+  "model": "RandomForestRegressor",
+  "model_version": "1.0.0",
+  "target": "Percent_Bleaching",
+  "feature_count": 33,
+  "metrics": {
+    "mae": 7.4676,
+    "rmse": 13.6202,
+    "r2": 0.5549
+  },
+  "description": "Modelo de regresión para estimar el porcentaje de blanqueamiento coralino a partir de variables ambientales.",
+  "limitation": "Modelo experimental académico. Su desempeño disminuye en eventos de blanqueamiento severo."
+}
